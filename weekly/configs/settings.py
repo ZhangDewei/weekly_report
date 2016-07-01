@@ -81,7 +81,7 @@ AUTH_PROFILE_MODULE = 'report.UserProfile'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mewoo_weekly',
+        'NAME': 'weekly',
         'User': 'root',
         'PASSWORD': 'password',
         'HOST': '127.0.0.1',
