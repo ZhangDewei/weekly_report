@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+<link href="{% static 'css/report_main.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="javascript:;">dashboard</a>
+		</div>
+		<span class="navbar-brand handle-state float-right"><a href="/report/logout/">{{request.user.username}}|退出</a></span>
+	</div>
+</nav>
+<div id="make-btn">
+
+</div>
+<div id="contents">
+
+</div>
+<script type="text/babel">
+	var CreateWeeklyMain = React.createClass({
+		render: function(){
+			return (
+				<button onClick={this.make} className="btn btn-default">创建本周周报空间</button>
+			)
+		},
+		make: function(){
+			$.ajax({
+				url: '',
+				data: {
+					csrfmiddlewaretoken: "{{ csrf_token }}"
+				},
+				type: 'post',
+				success: function(data){
+					if(data.code == 0){
+						window.location.href = window.location.href;
+					}else{
+						alert(data.error)
+					}
+				}
+			})
+		}
+	});
+
+	ReactDOM.render(
+		<CreateWeeklyMain />,
+		document.getElementById('make-btn')
+	)
+
+	var Reports = React.createClass({
+		render: function(){
+			var str = [];
+			{% if report %}
+			{% for data in report %}
+			str.push(<tr className="pointer">
+						<td><a href="/report/report_contents/{{data.id}}/">{{data.create_time}}</a></td>
+						<td>{{data.weekly_num}}</td>
+						<td>{{data.user.username}}</td>
+					</tr>);
+			{% endfor %}
+			{% endif %}
+			return (
+				<table className="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<td>创建日期</td>
+							<td>本年第几周</td>
+							<td>创建人</td>
+						</tr>
+					</thead>
+					<tbody>
+						{str}
+					</tbody>
+				</table>
+			)
+		}
+	})
+
+	ReactDOM.render(
+		<Reports />,
+		document.getElementById('contents')
+	)
+</script>
+{% endblock %}
+{% block foot %}
+{% endblock %}

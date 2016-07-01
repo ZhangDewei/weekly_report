@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+<div id="container">
+
+</div>
+<script type="text/babel">
+	var Form = React.createClass({
+		render: function(){
+			return (
+				<form className="form" method="post">{% csrf_token %}
+				  <div className="form-group">
+				    <input type="text" className="form-control" name="username" id="username" placeholder="username" />
+				  </div>
+				  <div className="form-group">
+				    <input type="password" className="form-control" name="password" id="password" placeholder="password" />
+				  </div>
+				  <button type="submit" className="btn btn-default">登录</button>
+				  <div id="register" onClick={this.toRegister} className="btn btn-default">注册</div>
+				</form>
+			)
+		},
+		toRegister: function(){
+			window.location.href = '/report/regist'
+		}
+	});
+
+	ReactDOM.render(
+		<Form />,
+		document.getElementById('container')
+	)
+
+</script>
+{% endblock %}
+{% block foot %}
+{% endblock %}

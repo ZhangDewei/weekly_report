@@ -1,0 +1,13 @@
+textarea {
+	width: 50%;
+	height: 10rem;
+}
+
+#weekly-contents-area {
+	display:none;
+}
+
+#bottom {
+	margin-top: 10px;
+	border-top:1px solid #5c5c5c;
+}

@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<script src="{% static 'js/react.js' %}"></script>
+	<script src="{% static 'js/react-dom.js' %}"></script>
+	<script src="{% static 'js/react-with-addons.js' %}"></script>
+	<script src="{% static 'js/browser.js' %}"></script>
+	<link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" />
+	<script src="//cdn.bootcss.com/jquery/1.12.2/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<link href="{% static 'css/login.css' %}" rel="stylesheet" />
+</head>
+<body>
+	<div id="container">
+
+	</div>
+</body>
+<script type="text/babel">
+	var Form = React.createClass({
+		render: function(){
+			return (
+				<form className="form" method="post" onSubmit={this.push}>{% csrf_token %}
+				  <div className="form-group">
+				    <input type="text" className="form-control" name="username" id="username" placeholder="用户名" required />
+				  </div>
+				  <div className="form-group">
+				    <input type="password" className="form-control" id="password" name="password" placeholder="输入密码" required />
+				  </div>
+				  <div className="form-group">
+				    <input type="password" className="form-control" id="password_two" name="password_two" placeholder="确认密码" required />
+				  </div>
+				  <div className="form-group">
+				    <select name="department" className="form-control" required>
+				    	<option value=''>--部门--</option>
+				    	{% for k, v in department.items %}
+				    	<option value="{{k}}">{{v}}</option>
+				    	{% endfor %}
+				    </select>
+				  </div>
+				  <button type="submit" className="btn btn-default">注册</button>
+				</form>
+			)
+		},
+		push: function(event){
+			var password = document.getElementById('password');
+			var passwordTwo = document.getElementById('password_two');
+			if (password.value != passwordTwo.value){
+				alert('两次密码不一致')
+				event.preventDefault();
+				return;
+			}
+		}
+	});
+
+	ReactDOM.render(
+		<Form />,
+		document.getElementById('container')
+	)
+
+</script>
+</html>

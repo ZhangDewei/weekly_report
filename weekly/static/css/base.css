@@ -1,0 +1,5 @@
+.float-right {
+	float:right !important;
+	vertical-align:middle;
+	color:#0275d8;
+}

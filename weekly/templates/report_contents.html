@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+<link href="{% static 'css/report_contents.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="javascript:;">dashboard</a>
+		</div>
+		<span class="navbar-brand handle-state float-right"><a href="/report/logout/">{{request.user.username}}|退出</a></span>
+	</div>
+</nav>
+<div id="top"></div>
+<div id="bottom"></div>
+<script type="text/babel">
+	var Form = React.createClass({
+		render: function(){
+			return (
+				<div>
+				  <button onClick={this.writeWeekly} className="btn btn-default">写周报</button><br />
+				  <div id="weekly-contents-area">
+					  <textarea id="weekly-contents" placeholder="写周报，如：2月1日：...;在每天内容结尾加上<br/>"></textarea><br />
+					  <button onClick={this.submit} className="btn btn-default">提交</button>
+				  </div>
+				</div>
+			)
+		},
+		submit: function(){
+			var contents = document.getElementById('weekly-contents');
+			if(!contents.value){
+				alert('数据不能为空')
+			}else{
+				$.ajax({
+					url:'',
+					data:{
+						mode: 'save',
+						contents: contents.value,
+						csrfmiddlewaretoken: "{{ csrf_token }}"
+					},
+					type: 'post',
+					success: function(data){
+						if(data.code == 0){
+							window.location.href = window.location.href;
+						}else{
+							alert(data.error)
+						}
+					}
+				})
+			}
+		},
+		writeWeekly: function(){
+			$.ajax({
+				url:'',
+				data: {
+					mode: 'check',
+					csrfmiddlewaretoken: "{{ csrf_token }}"
+				},
+				type:'post',
+				success: function(data){
+					if(data.code == 0){
+						document.getElementById('weekly-contents-area').style.display = 'block'
+					}else{
+						alert('写过周报了')
+					}
+				}
+			})
+		}
+	});
+
+	ReactDOM.render(
+		<Form />,
+		document.getElementById('top')
+	);
+
+	var Contents = React.createClass({
+		render: function(){
+			var str = [];
+			{% if report_contents %}
+			{% for data in report_contents %}
+			str.push(<tr>
+						<td>{{data.user.username}}</td>
+						<td>{{data.create_time}}</td>
+						<td><button className="btn btn-default" type="button" data-toggle="popover" data-placement="bottom" data-content="{{data.contents}}">查看</button></td>
+					</tr>)
+			{% endfor %}
+			{% endif %}
+			return (
+				<table className="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<td>姓名</td>
+							<td>创建时间</td>
+							<td>功能</td>
+						</tr>
+					</thead>
+					<tbody>
+						{str}
+					</tbody>
+				</table>
+			)
+		},
+		componentDidMount: function(){
+			$('[data-toggle="popover"]').popover({html: true});
+		}
+	});
+
+	ReactDOM.render(
+		<Contents />,
+		document.getElementById('bottom')
+	)
+</script>
+{% endblock %}
+{% block foot %}
+{% endblock %}
