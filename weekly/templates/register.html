@@ -35,7 +35,7 @@
 				    <select name="department" className="form-control" required>
 				    	<option value=''>--部门--</option>
 				    	{% for k, v in department.items %}
-				    	<option value="{{k}}">{{v}}</option>
+				    	<option value="{{k.value}}">{{v}}</option>
 				    	{% endfor %}
 				    </select>
 				  </div>

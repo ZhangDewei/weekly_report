@@ -26,7 +26,7 @@ department_dict = OrderedDict([
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
-	department = models.SmallIntegerField(default=Department.other)
+	department = models.SmallIntegerField(default=Department.other.value)
 
 
 class Report(models.Model):

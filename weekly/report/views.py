@@ -53,10 +53,10 @@ class Regist(View):
 	def post(self, request):
 		username = request.POST.get('username')
 		password = make_password(request.POST.get('password'))
-		department = int(request.POST.get('department', 0))
+		department = request.POST.get('department', 0)
 
 		user = User.objects.create(username=username, password=password)
-		UserProfile.objects.create(user=user, department=department)
+		UserProfile.objects.create(user=user, department=int(department))
 		return redirect('/report/login')
 
 
