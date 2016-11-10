@@ -47,6 +47,7 @@ class Regist(View):
 	def get(self, request):
 		data = {}
 		data['department'] = department_dict
+		data['error'] = request.GET.get('error', None)
 
 		return render(request, self.TEMPLATE, data)
 
@@ -54,6 +55,11 @@ class Regist(View):
 		username = request.POST.get('username')
 		password = make_password(request.POST.get('password'))
 		department = request.POST.get('department', 0)
+
+		user = User.objects.filter(username=username)
+
+		if user:
+			return redirect('/report/regist/?error=%s' % 'username has registed')
 
 		user = User.objects.create(username=username, password=password)
 		UserProfile.objects.create(user=user, department=int(department))
