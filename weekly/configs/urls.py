@@ -1,8 +1,8 @@
 #coding:utf-8
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
-urlpatterns = patterns(
-	'',
-	url(r'^report/', include('report.urls'))
-)
+
+urlpatterns = [
+   url(r'^report/', include('report.urls'))
+]
